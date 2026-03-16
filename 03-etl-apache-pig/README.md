@@ -4,14 +4,14 @@ Pig Latin scripts to extract, transform, and analyze trucking IoT data — drive
 ![Pig](https://img.shields.io/badge/Apache-Pig-blue) ![ETL](https://img.shields.io/badge/Pattern-ETL-orange) ![HDFS](https://img.shields.io/badge/Storage-HDFS-green)
 
 ## Overview
-Two ETL pipelines built in Pig Latin against a Trucking IoT dataset in HDFS. Script 1 aggregates total hours and miles logged per driver by joining two CSVs. Script 2 filters and groups all overspeed events by driver. Both demonstrate core Pig Latin operations: loading schema-less data, filtering headers, transforming fields, grouping, aggregating, and joining relations.
+Two ETL pipelines built in Pig Latin against a Trucking IoT dataset in HDFS. Script 1 (`sum_of_hours_miles.pig`) aggregates total hours and miles logged per driver by joining two CSVs on driverId. Script 2 (`overspeed_drivers.pig`) filters truck telemetry for speeding violations and groups them by driver. Both use positional field notation and demonstrate core Pig Latin operations: loading, filtering headers, transforming, grouping, aggregating, and joining.
 
 ## Dataset
-| File | Contents |
-|------|----------|
-| `drivers.csv` | Driver records — driverId, name, and metadata |
-| `timesheet.csv` | Per-driver logs — driverId, hours_logged, miles_logged |
-| `truck_event_text_partition.csv` | Event-level telemetry — driverId, eventType, speed, location |
+| File | Fields used |
+|------|-------------|
+| `drivers.csv` | `$0` driverId, `$1` name — header filtered with `$0>1` |
+| `timesheet.csv` | `$0` driverId, `$2` hours_logged, `$3` miles_logged |
+| `truck_event_text_partition.csv` | Full named schema: driverId, truckId, eventTime, eventType, longitude, latitude, eventKey, CorrelationId, driverName, routeId, routeName, eventDate |
 
 ## Setup
 ```bash
@@ -23,7 +23,8 @@ hadoop fs -ls /user/csc/Pig/
 
 ---
 
-## Script 1 — driver hours and miles summary
+## Script 1 — sum_of_hours_miles.pig
+Joins `drivers.csv` and `timesheet.csv` on driverId to produce total hours and miles per driver. Uses positional notation since no schema is defined on load. Header rows excluded by filtering `$0>1`.
 ```pig
 -- Operations for drivers.csv
 drivers = LOAD 'Pig/drivers.csv' USING PigStorage(',');
@@ -40,16 +41,18 @@ sum_logged = FOREACH grp_logged GENERATE group AS driverId,
 SUM(timesheet_logged.hours_logged) AS sum_hourslogged,
 SUM(timesheet_logged.miles_logged) AS sum_mileslogged;
 join_sum_logged = JOIN sum_logged BY driverId, drivers_details BY driverId;
-join_data = FOREACH join_sum_logged GENERATE $0 AS driverId, $4 AS name, $1 AS hours_logged, $2 AS miles_logged;
+join_data = FOREACH join_sum_logged GENERATE $0 AS driverId, $4 AS name, $1 AS hours_logged,
+$2 AS miles_logged;
 dump join_data;
 ```
 ```bash
-pig -f driver_hours_miles.pig
+pig -f sum_of_hours_miles.pig
 ```
 
 ---
 
-## Script 2 — overspeed event detection
+## Script 2 — overspeed_drivers.pig
+Loads truck event telemetry with a full named schema, filters for `'Overspeed'` events, then groups violations by driverId.
 ```pig
 drivers = LOAD 'Pig/truck_event_text_partition.csv' USING PigStorage(',') AS (
         driverId:int,
@@ -81,16 +84,16 @@ pig -f overspeed_drivers.pig
 | Operation | Purpose |
 |-----------|---------|
 | `LOAD / PigStorage` | Read CSV from HDFS with delimiter |
-| `FILTER` | Remove headers and apply conditions |
-| `FOREACH / GENERATE` | Select and transform fields |
+| `FILTER` | Remove headers (`$0>1`) and filter by value |
+| `FOREACH / GENERATE` | Select and rename fields — positional or named |
 | `GROUP` | Group rows by key into a bag |
 | `SUM` | Aggregate values across grouped bag |
-| `JOIN` | Combine two relations on shared key |
-| `DUMP` | Print output to console |
+| `JOIN` | Combine two relations on a shared key |
+| `dump` | Print output to console |
 
 ## Key concepts demonstrated
-- Pig Latin compiles down to MapReduce jobs automatically — no Java required
-- Execution is lazy — deferred until DUMP or STORE triggers the pipeline
-- Schema-on-read makes Pig flexible for raw CSV data without pre-defined tables
+- Positional notation (`$0`, `$1`...) loads schema-less CSVs without pre-defining structure
+- Filtering `$0>1` is a practical pattern for stripping CSV headers in Pig
+- Pig execution is lazy — pipeline only runs when `dump` or `STORE` is triggered
 - Distributed JOIN across HDFS datasets without a relational database
-- GROUP → FOREACH → SUM aggregation pattern mirrors clinical claims and EHR data rollups
+- GROUP → FOREACH → SUM mirrors rollup patterns used in clinical claims and EHR pipelines
