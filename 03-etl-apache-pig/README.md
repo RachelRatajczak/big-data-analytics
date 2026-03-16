@@ -25,38 +25,23 @@ hadoop fs -ls /user/csc/Pig/
 
 ## Script 1 — driver hours and miles summary
 ```pig
--- Load drivers.csv
-raw_drivers_load = LOAD '/user/csc/Pig/drivers.csv'
-    USING PigStorage(',')
-    AS (driverId:int, name:chararray, ssn:chararray,
-        location:chararray, certified:chararray, wage_plan:chararray);
+-- Operations for drivers.csv
+drivers = LOAD 'Pig/drivers.csv' USING PigStorage(',');
+raw_drivers = FILTER drivers BY $0>1;
+drivers_details = FOREACH raw_drivers GENERATE $0 AS driverId, $1 AS name;
 
--- Filter header, select fields
-raw_drivers = FILTER raw_drivers_load BY driverId != 'driverId';
-driver_details = FOREACH raw_drivers GENERATE driverId, name;
-
--- Load timesheet, filter header, select fields
-raw_timesheet = LOAD '/user/csc/Pig/timesheet.csv'
-    USING PigStorage(',')
-    AS (driverId:int, week:int, hours_logged:int, miles_logged:int);
-timesheet_logged = FOREACH
-    (FILTER raw_timesheet BY driverId != 'driverId')
-    GENERATE driverId, hours_logged, miles_logged;
-
--- Group and sum hours/miles per driver
-grouped  = GROUP timesheet_logged BY driverId;
-sum_logged = FOREACH grouped GENERATE
-    group AS driverId,
-    SUM(timesheet_logged.hours_logged) AS total_hours,
-    SUM(timesheet_logged.miles_logged) AS total_miles;
-
--- Join driver names with totals
-join_sum_logged = JOIN driver_details BY driverId, sum_logged BY driverId;
-result = FOREACH join_sum_logged GENERATE
-    driver_details::driverId, driver_details::name,
-    sum_logged::total_hours,  sum_logged::total_miles;
-
-DUMP result;
+-- Operations for timesheet.csv
+timesheet = LOAD 'Pig/timesheet.csv' USING PigStorage(',');
+raw_timesheet = FILTER timesheet BY $0>1;
+timesheet_logged = FOREACH raw_timesheet GENERATE $0 AS driverId, $2 AS hours_logged,
+$3 AS miles_logged;
+grp_logged = GROUP timesheet_logged BY driverId;
+sum_logged = FOREACH grp_logged GENERATE group AS driverId,
+SUM(timesheet_logged.hours_logged) AS sum_hourslogged,
+SUM(timesheet_logged.miles_logged) AS sum_mileslogged;
+join_sum_logged = JOIN sum_logged BY driverId, drivers_details BY driverId;
+join_data = FOREACH join_sum_logged GENERATE $0 AS driverId, $4 AS name, $1 AS hours_logged, $2 AS miles_logged;
+dump join_data;
 ```
 ```bash
 pig -f driver_hours_miles.pig
