@@ -1,6 +1,9 @@
 # 05 — Data analytics with Hive
 HiveQL for data warehousing, OLAP aggregations, driver risk analysis, and Titanic survival statistics
 
+> Graduate coursework — University of Illinois Springfield, Data Analytics (CSC 534)
+
+
 ![Hive](https://img.shields.io/badge/Apache-Hive-yellow) ![OLAP](https://img.shields.io/badge/Pattern-OLAP-blue) ![HiveQL](https://img.shields.io/badge/Language-HiveQL-green)
 
 ## Overview
