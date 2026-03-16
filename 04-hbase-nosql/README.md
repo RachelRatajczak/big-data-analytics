@@ -52,7 +52,7 @@ hbase org.apache.hadoop.hbase.mapreduce.ImportTsv \
 events:longitude,events:latitude,HBASE_ROW_KEY,events:CorrelationId,\
 events:driverName,events:routeId,events:routeName,events:eventDate" \
   rrata:truck_event \
-  hdfs://node00.sun:8020/user/data/CSC534BDA/Truck-IoT/truck_event_text_partition.csv
+  hdfs://namenode-host:8020/user/data/CSC534BDA/Truck-IoT/truck_event_text_partition.csv
 ```
 Result: 17,076 map input = map output records, 0 bad lines.
 ```bash
