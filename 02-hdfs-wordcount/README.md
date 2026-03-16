@@ -1,6 +1,8 @@
 # 02 — HDFS word count
 MapReduce word frequency analysis over HDFS — nursery rhyme dataset and real-world COVID-19 corpus
 
+> Graduate coursework — University of Illinois Springfield, Data Analytics (CSC 534)
+
 ![HDFS](https://img.shields.io/badge/Hadoop-HDFS-blue) ![MapReduce](https://img.shields.io/badge/MapReduce-Java-purple)
 
 ## Overview
