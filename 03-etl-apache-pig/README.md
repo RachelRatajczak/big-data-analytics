@@ -51,21 +51,25 @@ pig -f driver_hours_miles.pig
 
 ## Script 2 — overspeed event detection
 ```pig
--- Load truck events with full schema
-drivers = LOAD '/user/csc/Pig/truck_event_text_partition.csv'
-    USING PigStorage(',')
-    AS (driverId:int, truckId:int, eventTime:chararray,
-        eventType:chararray, longitude:double, latitude:double,
-        eventKey:chararray, correlationId:long, driverName:chararray,
-        routeId:int, routeName:chararray, isMobile:chararray);
+drivers = LOAD 'Pig/truck_event_text_partition.csv' USING PigStorage(',') AS (
+        driverId:int,
+        truckId:int,
+        eventTime:chararray,
+        eventType:chararray,
+        longitude: double,
+        latitude: double,
+        eventKey: chararray,
+        CorrelationId: double,
+        driverName: chararray,
+        routeId: int,
+        routeName: chararray,
+        eventDate: chararray
+);
 
--- Filter for overspeed events, group by driver
 overspeed_drivers = FILTER drivers BY eventType == 'Overspeed';
-grouped_overspeed  = GROUP overspeed_drivers BY driverId;
-result = FOREACH grouped_overspeed GENERATE
-    group AS driverId, overspeed_drivers;
-
-DUMP result;
+overspeed_group = GROUP overspeed_drivers BY driverId;
+overspeed_events = FOREACH overspeed_group GENERATE group AS driverId, overspeed_drivers;
+dump overspeed_events;
 ```
 ```bash
 pig -f overspeed_drivers.pig
