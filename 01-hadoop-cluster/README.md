@@ -1,6 +1,8 @@
 # 01 — Hadoop cluster setup
 Standalone to fully distributed mode on a 3-node Ubuntu VM cluster
 
+> Graduate coursework — University of Illinois Springfield, Data Analytics (CSC 534)
+
 ![Hadoop](https://img.shields.io/badge/Hadoop-3.x-blue) ![HDFS](https://img.shields.io/badge/HDFS-YARN-blue) ![Ubuntu](https://img.shields.io/badge/OS-Ubuntu-orange)
 
 ## Cluster architecture
