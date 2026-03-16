@@ -1,6 +1,8 @@
 # 03 — ETL pipeline with Apache Pig
 Pig Latin scripts to extract, transform, and analyze trucking IoT data — driver hours, miles, and speeding events
 
+> Graduate coursework — University of Illinois Springfield, Data Analytics (CSC 534)
+
 ![Pig](https://img.shields.io/badge/Apache-Pig-blue) ![ETL](https://img.shields.io/badge/Pattern-ETL-orange) ![HDFS](https://img.shields.io/badge/Storage-HDFS-green)
 
 ## Overview
