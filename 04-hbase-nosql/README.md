@@ -1,6 +1,8 @@
 # 04 — NoSQL database: HBase
 Wide-column NoSQL operations on a Hadoop cluster — DDL, DML, bulk data import, and non-interactive shell commands
 
+> Graduate coursework — University of Illinois Springfield, Data Analytics (CSC 534)
+
 ![HBase](https://img.shields.io/badge/Apache-HBase-purple) ![NoSQL](https://img.shields.io/badge/Database-NoSQL-blue) ![Hadoop](https://img.shields.io/badge/Storage-HDFS-green)
 
 ## Overview
