@@ -1,5 +1,7 @@
 # Assignment 02 — Topic Modeling with Apache Spark and Spark NLP
 
+![Spark](https://img.shields.io/badge/Apache-Spark-orange) ![PySpark](https://img.shields.io/badge/Language-PySpark-blue) ![ML](https://img.shields.io/badge/PySpark-ML-purple) ![NLP](https://img.shields.io/badge/Spark-NLP-red) ![LDA](https://img.shields.io/badge/MLlib-LDA-blueviolet)
+
 **Notebook:** `BA_Ex5-2_rrata.ipynb`
 
 ---
