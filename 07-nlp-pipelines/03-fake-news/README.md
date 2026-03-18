@@ -1,5 +1,7 @@
 # Assignment 03 — Detecting Fake News with Apache Spark and Spark NLP
 
+![Spark](https://img.shields.io/badge/Apache-Spark-orange) ![PySpark](https://img.shields.io/badge/Language-PySpark-blue) ![ML](https://img.shields.io/badge/PySpark-ML-purple) ![NLP](https://img.shields.io/badge/Spark-NLP-red) ![USE](https://img.shields.io/badge/Embeddings-Universal%20Sentence%20Encoder-teal)
+
 **Notebook:** `BA_Ex5-3_rrata.ipynb`
 
 ---
