@@ -1,5 +1,7 @@
 # Assignment 01 — Named Entity Recognition with BERT and Spark NLP
 
+![Spark](https://img.shields.io/badge/Apache-Spark-orange) ![PySpark](https://img.shields.io/badge/Language-PySpark-blue) ![ML](https://img.shields.io/badge/PySpark-ML-purple) ![NLP](https://img.shields.io/badge/Spark-NLP-red) ![BERT](https://img.shields.io/badge/Embeddings-BERT-green)
+
 **Notebooks:** `EX5-1_rrata.ipynb` · `EX5-1_Q10_rrata.ipynb`
 
 ---
