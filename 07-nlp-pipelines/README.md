@@ -2,6 +2,8 @@
 
 **Large-scale text processing with Spark NLP, BERT, and Spark MLlib**
 
+> Graduate coursework — University of Illinois Springfield, Data Analytics (CSC 534)
+
 ---
 
 ## Overview
