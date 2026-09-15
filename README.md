@@ -5,7 +5,7 @@ End-to-end Hadoop ecosystem coursework — distributed storage, ETL pipelines, N
 ![Spark](https://img.shields.io/badge/Apache-Spark-orange)
 ![Hive](https://img.shields.io/badge/Hive-HBase-green)
 
-## Overview
+## Overview 
 This repository documents hands-on coursework from a graduate-level Data Analytics course covering the full Hadoop ecosystem. Projects span cluster setup, distributed file operations, ETL pipelines, NoSQL data storage, SQL-on-Hadoop analytics, Spark batch processing, and NLP-style document processing. Each module is self-contained with its own code and documentation.
 
 ## Modules
